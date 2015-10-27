@@ -4,13 +4,7 @@ import cars.AutonomCar;
 public class Main {
 
     public static void main(String[] args){
-        AutonomCar autonomCar = new AutonomCar();
-        AutonomCar autonomCar2 = new AutonomCar();
-
-
-        autonomCar.start();
-        autonomCar2.start();
-
+        AutoSimulator autoSimulator = new AutoSimulator();
 
 
 

@@ -18,6 +18,9 @@ public class AutonomCar extends CarBaseClass {
     static DataOutputStream toServer;
     static UserInterface user = new UserInterface();
 
+    public AutonomCar() {
+        start();
+    }
 
     public void printId(){
         System.out.println("My id is: " + getCarId());
