@@ -2,15 +2,24 @@ package cars;
 
 import autobahn.Location;
 
+import java.io.Serializable;
+
 /**
  * Created by alican on 26.10.2015.
  */
-public class CarDataPackage{
+public class CarDataPackage implements Serializable{
 
     String id;
     int speed;
     Location destination;
     int position;
+
+    public CarDataPackage(String id, int speed, Location destination, int position) {
+        this.id = id;
+        this.speed = speed;
+        this.destination = destination;
+        this.position = position;
+    }
 
     public String getId() {
         return id;

@@ -1,27 +1,44 @@
 import cars.AutonomCar;
-import cars.CarBaseClass;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-/**
- * Created by alican on 27.10.2015.
- */
+import com.budhash.cliche.Command;
+import com.budhash.cliche.ShellFactory;
+
+
 public class AutoSimulator {
 
-    //HashMap<String, CarBaseClass> carList;
     ArrayList<AutonomCar> autonomCarArrayList;
 
-
-    public AutoSimulator() {
-
-       // carList = new HashMap<>(10);
+    public AutoSimulator() throws IOException {
         autonomCarArrayList = new ArrayList<>(10);
+    }
 
-        for (int i = 0; i < 10; i++){
+    public static void main(String[] args) throws IOException {
+        ShellFactory.createConsoleShell("AutoSimulator", "Wilkommen bei AutoSimulator", new AutoSimulator())
+                .commandLoop(); // and three.
+
+    }
+
+    @Command
+    public void addCars(int count) {
+        autonomCarArrayList.add(new AutonomCar());
+
+        for (int i = 0; i < count; i++) {
             autonomCarArrayList.add(new AutonomCar());
-
         }
+    }
+
+    @Command
+    public void printCars() {
+        for (AutonomCar autonomCar : autonomCarArrayList) {
+            System.out.println(autonomCar.getCarId());
+        }
+    }
+
+    public void printMenu() {
+        System.out.println("Menue: ");
+        System.out.println();
     }
 }

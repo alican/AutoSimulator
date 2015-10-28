@@ -9,9 +9,9 @@ package communication;
  * Darmstadt Univ. of Applied Sciences      Hochschule Darmstadt
  */
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
+import cars.CarDataPackage;
+
+import java.io.*;
 import java.net.*;
 
 public class EchoService extends Thread {
@@ -25,20 +25,28 @@ public class EchoService extends Thread {
     public void run() {
         String line;
         BufferedReader fromClient;
-        DataOutputStream toClient;
+        InputStream in;
+        ObjectInputStream inputStream;
+        ObjectOutputStream toClient;
         boolean verbunden = true;
 
         System.out.println("Thread started: " + this); // Display Thread-ID
 
         try {
-            fromClient = new BufferedReader              // Datastream FROM Client
-                    (new InputStreamReader(client.getInputStream()));
-            toClient = new DataOutputStream(client.getOutputStream()); // TO Client
+
+            inputStream = new ObjectInputStream(client.getInputStream());
+
+            fromClient = new BufferedReader(new InputStreamReader(client.getInputStream()));
+
+
+            toClient = new ObjectOutputStream(client.getOutputStream()); // TO Client
             while (verbunden) {     // repeat as long as connection exists
-                line = fromClient.readLine();              // Read Request
-                System.out.println("Received: " + line);
-                if (line.equals(".")) verbunden = false;   // Break Conneciton?
-                else toClient.writeBytes(line.toUpperCase() + '\n'); // Response
+                //line = fromClient.readLine();              // Read Request
+                CarDataPackage dataPackage = (CarDataPackage) inputStream.readObject();
+                System.out.println("Received: " + dataPackage.getId());
+               // if (line.equals(".")) verbunden = false;   // Break Conneciton?
+                //else
+                toClient.writeBytes(dataPackage.getId().toUpperCase() + '\n'); // Response
             }
             fromClient.close();
             toClient.close();

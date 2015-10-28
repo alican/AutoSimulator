@@ -1,10 +1,16 @@
 import cars.AutonomCar;
 
+import java.io.IOException;
+
 
 public class Main {
 
     public static void main(String[] args){
-        AutoSimulator autoSimulator = new AutoSimulator();
+        try {
+            AutoSimulator autoSimulator = new AutoSimulator();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
 
