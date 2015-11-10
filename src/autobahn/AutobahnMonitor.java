@@ -1,10 +1,13 @@
 package autobahn;
 
 import cars.AutonomCar;
+import cars.CarDataPackage;
 import communication.EchoService;
 
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.net.*;
 import java.util.HashMap;
 
 
@@ -45,9 +48,45 @@ public class AutobahnMonitor extends Thread{
 
         }
 
+        public void startServerUDP(){
+
+            try{
+
+                DatagramSocket socket = new DatagramSocket(9997);
+                byte[] incomingData = new byte[1024];
+
+
+                while(true) {
+                    // Auf Anfrage warten
+
+
+                    DatagramPacket incomingPacket = new DatagramPacket(incomingData, incomingData.length);
+                    socket.receive(incomingPacket);
+                    byte[] data = incomingPacket.getData();
+                    ByteArrayInputStream in = new ByteArrayInputStream(data);
+                    ObjectInputStream is = new ObjectInputStream(in);
+                    try {
+                        CarDataPackage carDataPackage = (CarDataPackage) is.readObject();
+                        System.out.println("CarDataPackage received = " + carDataPackage.getId());
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+            } catch (SocketException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
         public void run(){
             try {
-                startServer();
+                startServerUDP();
+                //   startServer();
             } catch (Exception e) {
                 e.printStackTrace();
             }

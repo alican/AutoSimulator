@@ -4,9 +4,7 @@ package cars;
 import communication.UserInterface;
 
 import java.io.*;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.SocketAddress;
+import java.net.*;
 
 public class AutonomCar extends CarBaseClass {
 
@@ -34,6 +32,7 @@ public class AutonomCar extends CarBaseClass {
                 //fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
                 sendRequest();
+
                 sleep((int)(Math.random()*100));
 
                 // fromServer.close();
@@ -41,8 +40,35 @@ public class AutonomCar extends CarBaseClass {
         }finally {
             toServer.close();
         }
+    }
+
+    private void sendUDP(){
+
+        try{
+            DatagramSocket Socket = new DatagramSocket();
+            InetAddress IPAddress = InetAddress.getByName("localhost");
 
 
+            byte[] incomingData = new byte[1024];
+
+            CarDataPackage carDataPackage = getData();
+
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            ObjectOutputStream os = new ObjectOutputStream(outputStream);
+            os.writeObject(carDataPackage);
+            byte[] data = outputStream.toByteArray();
+            DatagramPacket sendPacket = new DatagramPacket(data, data.length, IPAddress, 9997);
+
+            Socket.send(sendPacket);
+            System.out.println("Message sent from client");
+
+        } catch (SocketException e) {
+            e.printStackTrace();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
     }
@@ -73,7 +99,19 @@ public class AutonomCar extends CarBaseClass {
     public void run(){
 
         try {
-            startClient();
+
+            for(int i = 0; i < 10; i++) {
+
+                //fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+                sendUDP();
+
+                sleep((int)(Math.random()*1000));
+
+                // fromServer.close();
+            }
+
+           // startClient();
         } catch (Exception e) {
            // e.printStackTrace();
         }
