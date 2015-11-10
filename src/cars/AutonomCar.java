@@ -4,14 +4,15 @@ package cars;
 import communication.UserInterface;
 
 import java.io.*;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
 
 public class AutonomCar extends CarBaseClass {
 
-    static Socket socket;
-    static BufferedReader fromServer;
-    static ObjectOutputStream toServer;
-    static UserInterface user = new UserInterface();
+    BufferedReader fromServer;
+    ObjectOutputStream toServer;
+    UserInterface user = new UserInterface();
 
     public AutonomCar() {
         start();
@@ -23,29 +24,27 @@ public class AutonomCar extends CarBaseClass {
 
     private void startClient() throws Exception{
 
-        socket = new Socket("localhost", 9998);
-        toServer = new ObjectOutputStream(     // Datastream FROM Server
-                socket.getOutputStream());
-        fromServer = new BufferedReader(     // Datastream TO Server
-                new InputStreamReader(socket.getInputStream()));
+        SocketAddress addr = new InetSocketAddress("localhost", 9998);
 
-        for(int i = 0; i < 10; i++) {
-            try {
-                sleep((int)(Math.random()*10000));
-            }
-            catch(InterruptedException e) {
+        try (Socket socket = new Socket()){
+            socket.connect(addr);
+            toServer = new ObjectOutputStream(socket.getOutputStream());
+            for(int i = 0; i < 10; i++) {
 
+                //fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+                sendRequest();
+                sleep((int)(Math.random()*100));
+
+                // fromServer.close();
             }
-            sendRequest();
+        }finally {
+            toServer.close();
         }
-        /*
-        while (sendRequest()) {              // Send requests while connected
-            receiveResponse();                 // Process server's answer
-        }
-        */
-        socket.close();
-        toServer.close();
-        fromServer.close();
+
+
+
+
     }
 
 
@@ -67,8 +66,8 @@ public class AutonomCar extends CarBaseClass {
     }
 
     private static void receiveResponse() throws IOException {
-        user.output("Server answers: " +
-                new String(fromServer.readLine()) + '\n');
+      //  user.output("Server answers: " +
+        //        new String(fromServer.readLine()) + '\n');
     }
 
     public void run(){

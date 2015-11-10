@@ -24,36 +24,29 @@ public class EchoService extends Thread {
     @Override
     public void run() {
         String line;
-        BufferedReader fromClient;
-        InputStream in;
-        ObjectInputStream inputStream;
-        ObjectOutputStream toClient;
+     //   ObjectOutputStream toClient;
         boolean verbunden = true;
 
         System.out.println("Thread started: " + this); // Display Thread-ID
 
-        try {
-
-            inputStream = new ObjectInputStream(client.getInputStream());
-
-            fromClient = new BufferedReader(new InputStreamReader(client.getInputStream()));
-
-
-            toClient = new ObjectOutputStream(client.getOutputStream()); // TO Client
+        try (
+                ObjectInputStream inputStream = new ObjectInputStream(client.getInputStream());
+                BufferedReader fromClient = new BufferedReader(new InputStreamReader(client.getInputStream()));
+        ){
+          //  toClient = new ObjectOutputStream(client.getOutputStream()); // TO Client
             while (verbunden) {     // repeat as long as connection exists
                 //line = fromClient.readLine();              // Read Request
                 CarDataPackage dataPackage = (CarDataPackage) inputStream.readObject();
                 System.out.println("Received: " + dataPackage.getId());
                // if (line.equals(".")) verbunden = false;   // Break Conneciton?
                 //else
-                toClient.writeBytes(dataPackage.getId().toUpperCase() + '\n'); // Response
+              //  toClient.writeBytes(dataPackage.getId() + '\n'); // Response
             }
-            fromClient.close();
-            toClient.close();
-            client.close(); // End
+//            fromClient.close();
+//            client.close(); // End
             System.out.println("Thread ended: " + this);
         } catch (Exception e) {
-            System.out.println(e);
+            //System.out.println(e);
         }
     }
 }

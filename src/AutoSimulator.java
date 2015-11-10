@@ -3,10 +3,6 @@ import cars.AutonomCar;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.budhash.cliche.Command;
-import com.budhash.cliche.ShellFactory;
-
-
 public class AutoSimulator {
 
     ArrayList<AutonomCar> autonomCarArrayList;
@@ -15,13 +11,11 @@ public class AutoSimulator {
         autonomCarArrayList = new ArrayList<>(10);
     }
 
-    public static void main(String[] args) throws IOException {
-        ShellFactory.createConsoleShell("AutoSimulator", "Wilkommen bei AutoSimulator", new AutoSimulator())
-                .commandLoop(); // and three.
+    void start(){
+        addCars(5000);
 
     }
 
-    @Command
     public void addCars(int count) {
         autonomCarArrayList.add(new AutonomCar());
 
@@ -30,15 +24,11 @@ public class AutoSimulator {
         }
     }
 
-    @Command
     public void printCars() {
         for (AutonomCar autonomCar : autonomCarArrayList) {
             System.out.println(autonomCar.getCarId());
         }
     }
 
-    public void printMenu() {
-        System.out.println("Menue: ");
-        System.out.println();
-    }
+
 }

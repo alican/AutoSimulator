@@ -8,6 +8,7 @@ public class Main {
     public static void main(String[] args){
         try {
             AutoSimulator autoSimulator = new AutoSimulator();
+            autoSimulator.start();
         } catch (IOException e) {
             e.printStackTrace();
         }
