@@ -10,7 +10,7 @@ import java.net.*;
 public class AutonomCar extends CarBaseClass {
 
     public static String address = "localhost";
-    public static int port = 9998;
+    public static int port = 9997;
 
     BufferedReader fromServer;
     ObjectOutputStream toServer;
@@ -32,7 +32,21 @@ public class AutonomCar extends CarBaseClass {
         System.out.println("My id is: " + getCarId());
     }
 
-    private void startClient() throws Exception{
+    public void startUDPClient() throws Exception{
+        for(int i = 0; i < 10; i++) {
+
+            Bench.BenchTest test = bench.start();
+
+            sendUDPRequest();
+
+            test.stop();
+
+            sleep((int)(Math.random()*1000));
+
+        }
+    }
+
+    private void startTCPClient() throws Exception{
 
 
         try (Socket socket = new Socket()){
@@ -43,7 +57,7 @@ public class AutonomCar extends CarBaseClass {
                 //fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 Bench.BenchTest test = bench.start();
 
-                sendRequest();
+                sendTCPRequest();
 
                 test.stop();
 
@@ -56,11 +70,11 @@ public class AutonomCar extends CarBaseClass {
         }
     }
 
-    private void sendUDP(){
+    private void sendUDPRequest(){
 
         try{
             DatagramSocket Socket = new DatagramSocket();
-            InetAddress IPAddress = InetAddress.getByName("localhost");
+            InetAddress IPAddress = InetAddress.getByName(address);
 
 
             byte[] incomingData = new byte[1024];
@@ -71,7 +85,7 @@ public class AutonomCar extends CarBaseClass {
             ObjectOutputStream os = new ObjectOutputStream(outputStream);
             os.writeObject(carDataPackage);
             byte[] data = outputStream.toByteArray();
-            DatagramPacket sendPacket = new DatagramPacket(data, data.length, IPAddress, 9997);
+            DatagramPacket sendPacket = new DatagramPacket(data, data.length, IPAddress, port);
 
             Socket.send(sendPacket);
             System.out.println("Message sent from client");
@@ -95,7 +109,7 @@ public class AutonomCar extends CarBaseClass {
         return new CarDataPackage(getCarId(), getSpeed(), getDestination(), getPosition());
     }
 
-    private boolean sendRequest() throws IOException {
+    private boolean sendTCPRequest() throws IOException {
         boolean holdTheLine = true;          // Connection exists
 
 
@@ -115,23 +129,16 @@ public class AutonomCar extends CarBaseClass {
 
     public void run(){
 
+
         try {
+            startTCPClient();
 
-            for(int i = 0; i < 10; i++) {
 
-                //fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                Bench.BenchTest test = bench.start();
+           // startUDPClient();
 
-                sendUDP();
 
-                test.stop();
 
-                sleep((int)(Math.random()*1000));
-
-                // fromServer.close();
-            }
-
-           // startClient();
+           // startTCPClient();
         } catch (Exception e) {
            // e.printStackTrace();
         }

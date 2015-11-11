@@ -31,6 +31,7 @@ public class AutobahnMonitor extends Thread{
 
     public static void main(String[] args) {
 
+        System.out.println("Monitor wurde gestartet...");
         bench = Bench.getInstance();
 
 
@@ -43,7 +44,7 @@ public class AutobahnMonitor extends Thread{
     public static class MonitorServer extends Thread{
 
         public void startServer() throws Exception{
-            int port = 9998;
+            int port = 9997;
             ServerSocket listenSocket = new ServerSocket(port);
             System.out.println("Multithreaded Server starts on Port " + port);
             while (true) {

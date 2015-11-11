@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class Main {
 
     static final String addr = "localhost";
-    static final int port = 9998;
+    static final int port = 9997;
 
 
     static int cars = 100;
