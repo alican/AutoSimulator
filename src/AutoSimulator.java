@@ -7,12 +7,14 @@ public class AutoSimulator {
 
     ArrayList<AutonomCar> autonomCarArrayList;
 
-    public AutoSimulator() throws IOException {
-        autonomCarArrayList = new ArrayList<>(10);
+    int cars;
+    public AutoSimulator(int cars) throws IOException {
+        this.cars = cars;
+        autonomCarArrayList = new ArrayList<>(cars);
     }
 
     void start(){
-        addCars(5000);
+        addCars(cars);
 
     }
 

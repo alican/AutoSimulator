@@ -3,6 +3,7 @@ package autobahn;
 import cars.AutonomCar;
 import cars.CarDataPackage;
 import communication.EchoService;
+import models.Bench;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -12,6 +13,10 @@ import java.util.HashMap;
 
 
 public class AutobahnMonitor extends Thread{
+
+    static long counter;
+
+    static Bench bench;
 
     HashMap<String, AutonomCar> registeredCars;
 
@@ -25,6 +30,8 @@ public class AutobahnMonitor extends Thread{
     }
 
     public static void main(String[] args) {
+
+        bench = Bench.getInstance();
 
 
         MonitorServer server = new MonitorServer();
@@ -62,21 +69,31 @@ public class AutobahnMonitor extends Thread{
 
                     DatagramPacket incomingPacket = new DatagramPacket(incomingData, incomingData.length);
                     socket.receive(incomingPacket);
+                    Bench.BenchTest test = bench.start();
+
                     byte[] data = incomingPacket.getData();
                     ByteArrayInputStream in = new ByteArrayInputStream(data);
                     ObjectInputStream is = new ObjectInputStream(in);
                     try {
                         CarDataPackage carDataPackage = (CarDataPackage) is.readObject();
-                        System.out.println("CarDataPackage received = " + carDataPackage.getId());
+                        System.out.println(++counter + " CarDataPackage received = " + carDataPackage.getId());
+                        test.stop();
                     } catch (ClassNotFoundException e) {
+                        bench.isFailed();
                         e.printStackTrace();
                     }
+                    if (counter == 1000){
+                        System.out.println(bench.results());
+                    }
+
 
 
                 }
             } catch (SocketException e) {
+                bench.isFailed();
                 e.printStackTrace();
             } catch (IOException e) {
+                bench.isFailed();
                 e.printStackTrace();
             }
 

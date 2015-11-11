@@ -2,18 +2,30 @@ package cars;
 
 
 import communication.UserInterface;
+import models.Bench;
 
 import java.io.*;
 import java.net.*;
 
 public class AutonomCar extends CarBaseClass {
 
+    public static String address = "localhost";
+    public static int port = 9998;
+
     BufferedReader fromServer;
     ObjectOutputStream toServer;
     UserInterface user = new UserInterface();
+    SocketAddress addr = new InetSocketAddress(address, port);
+
+
+    static Bench bench;
+
+
 
     public AutonomCar() {
+        bench = Bench.getInstance();
         start();
+
     }
 
     public void printId(){
@@ -22,7 +34,6 @@ public class AutonomCar extends CarBaseClass {
 
     private void startClient() throws Exception{
 
-        SocketAddress addr = new InetSocketAddress("localhost", 9998);
 
         try (Socket socket = new Socket()){
             socket.connect(addr);
@@ -30,10 +41,13 @@ public class AutonomCar extends CarBaseClass {
             for(int i = 0; i < 10; i++) {
 
                 //fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                Bench.BenchTest test = bench.start();
 
                 sendRequest();
 
-                sleep((int)(Math.random()*100));
+                test.stop();
+
+                sleep((int) (Math.random() * 100));
 
                 // fromServer.close();
             }
@@ -63,10 +77,13 @@ public class AutonomCar extends CarBaseClass {
             System.out.println("Message sent from client");
 
         } catch (SocketException e) {
+            bench.isFailed();
             e.printStackTrace();
         } catch (UnknownHostException e) {
+            bench.isFailed();
             e.printStackTrace();
         } catch (IOException e) {
+            bench.isFailed();
             e.printStackTrace();
         }
 
@@ -103,8 +120,11 @@ public class AutonomCar extends CarBaseClass {
             for(int i = 0; i < 10; i++) {
 
                 //fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                Bench.BenchTest test = bench.start();
 
                 sendUDP();
+
+                test.stop();
 
                 sleep((int)(Math.random()*1000));
 
