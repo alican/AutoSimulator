@@ -9,6 +9,10 @@
    -->
   
   <!-- Compiler options -->
+
+  <presetdef name="javac">
+    <javac includeantruntime="false" />
+  </presetdef>
   
   <property name="compiler.debug" value="on"/>
   <property name="compiler.generate.no.warnings" value="off"/>
@@ -54,6 +58,41 @@
     <exclude name="**/?*.clj"/>
   </patternset>
   
+  <!-- JDK definitions -->
+  
+  <property name="jdk.bin.1.8" value="${jdk.home.1.8}/bin"/>
+  <path id="jdk.classpath.1.8">
+    <fileset dir="${jdk.home.1.8}">
+      <include name="jre/lib/charsets.jar"/>
+      <include name="jre/lib/deploy.jar"/>
+      <include name="jre/lib/javaws.jar"/>
+      <include name="jre/lib/jce.jar"/>
+      <include name="jre/lib/jfr.jar"/>
+      <include name="jre/lib/jfxswt.jar"/>
+      <include name="jre/lib/jsse.jar"/>
+      <include name="jre/lib/management-agent.jar"/>
+      <include name="jre/lib/plugin.jar"/>
+      <include name="jre/lib/resources.jar"/>
+      <include name="jre/lib/rt.jar"/>
+      <include name="jre/lib/ext/access-bridge-64.jar"/>
+      <include name="jre/lib/ext/cldrdata.jar"/>
+      <include name="jre/lib/ext/dnsns.jar"/>
+      <include name="jre/lib/ext/jaccess.jar"/>
+      <include name="jre/lib/ext/jfxrt.jar"/>
+      <include name="jre/lib/ext/localedata.jar"/>
+      <include name="jre/lib/ext/nashorn.jar"/>
+      <include name="jre/lib/ext/sunec.jar"/>
+      <include name="jre/lib/ext/sunjce_provider.jar"/>
+      <include name="jre/lib/ext/sunmscapi.jar"/>
+      <include name="jre/lib/ext/sunpkcs11.jar"/>
+      <include name="jre/lib/ext/zipfs.jar"/>
+    </fileset>
+  </path>
+  
+  <property name="project.jdk.home" value="${jdk.home.1.8}"/>
+  <property name="project.jdk.bin" value="${jdk.bin.1.8}"/>
+  <property name="project.jdk.classpath" value="jdk.classpath.1.8"/>
+  
   
   <!-- Project Libraries -->
   
@@ -95,6 +134,9 @@
   <dirname property="module.autosimulator.basedir" file="${ant.file}"/>
   
   
+  <property name="module.jdk.home.autosimulator" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.autosimulator" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.autosimulator" value="${project.jdk.classpath}"/>
   
   <property name="compiler.args.autosimulator" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
   
@@ -106,6 +148,7 @@
   </path>
   
   <path id="autosimulator.module.production.classpath">
+    <path refid="${module.jdk.classpath.autosimulator}"/>
     <path refid="library.com.google.code.gson:gson:2.3.1.classpath"/>
     <path refid="library.com.budhash.cliche:cliche-shell:0.9.3.classpath"/>
     <path refid="library.org.apache.xmlrpc:xmlrpc-client:3.1.3.classpath"/>
@@ -121,6 +164,7 @@
   </path>
   
   <path id="autosimulator.module.classpath">
+    <path refid="${module.jdk.classpath.autosimulator}"/>
     <pathelement location="${autosimulator.output.dir}"/>
     <path refid="library.com.google.code.gson:gson:2.3.1.classpath"/>
     <path refid="library.com.budhash.cliche:cliche-shell:0.9.3.classpath"/>
@@ -157,7 +201,7 @@
   
   <target name="compile.module.autosimulator.production" description="Compile module AutoSimulator; production classes">
     <mkdir dir="${autosimulator.output.dir}"/>
-    <javac destdir="${autosimulator.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true">
+    <javac destdir="${autosimulator.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.autosimulator}/javac">
       <compilerarg line="${compiler.args.autosimulator}"/>
       <bootclasspath refid="autosimulator.module.bootclasspath"/>
       <classpath refid="autosimulator.module.production.classpath"/>
