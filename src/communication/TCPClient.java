@@ -20,6 +20,8 @@ public class TCPClient {
     static UserInterface user = new UserInterface();
 
     public static void main(String[] args) throws Exception {
+
+
         socket = new Socket("localhost", 9998);
         toServer = new DataOutputStream(     // Datastream FROM Server
                 socket.getOutputStream());

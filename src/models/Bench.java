@@ -56,6 +56,9 @@ public class Bench {
 
     public String results(){
 
+        if (benchTests.isEmpty()){
+            return "Keine Testdaten vorhanden.";
+        }
 
         return String.format(
                 "Server address: \t\t %s \n" +

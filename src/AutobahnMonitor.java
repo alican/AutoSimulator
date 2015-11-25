@@ -1,9 +1,9 @@
-package autobahn;
-
 import cars.AutonomCar;
 import cars.CarDataPackage;
 import communication.EchoService;
 import models.Bench;
+import org.apache.xmlrpc.client.XmlRpcClient;
+import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -12,11 +12,13 @@ import java.net.*;
 import java.util.HashMap;
 
 
-public class AutobahnMonitor extends Thread{
+public class AutobahnMonitor extends Thread {
 
     static long counter;
 
     static Bench bench;
+    static XmlRpcClient client;
+
 
     HashMap<String, AutonomCar> registeredCars;
 
@@ -25,7 +27,7 @@ public class AutobahnMonitor extends Thread{
     }
 
 
-    public void registerCar(AutonomCar car){
+    public void registerCar(AutonomCar car) {
         registeredCars.put(car.getCarId(), car);
     }
 
@@ -34,16 +36,29 @@ public class AutobahnMonitor extends Thread{
         System.out.println("Monitor wurde gestartet...");
         bench = Bench.getInstance();
 
-
         MonitorServer server = new MonitorServer();
         server.start();
 
 
     }
 
-    public static class MonitorServer extends Thread{
+    private static void init_xmprpc() {
 
-        public void startServer() throws Exception{
+        try {
+            XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl();
+            config.setServerURL(new URL("http://127.0.0.1:8080/xmlrpc"));
+            client = new XmlRpcClient();
+            client.setConfig(config);
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static class MonitorServer extends Thread {
+
+        public void startServer() throws Exception {
             int port = 9997;
             ServerSocket listenSocket = new ServerSocket(port);
             System.out.println("Multithreaded Server starts on Port " + port);
@@ -56,17 +71,16 @@ public class AutobahnMonitor extends Thread{
 
         }
 
-        public void startServerUDP(){
+        public void startServerUDP() {
 
-            try{
+            try {
 
                 DatagramSocket socket = new DatagramSocket(9997);
                 byte[] incomingData = new byte[1024];
 
 
-                while(true) {
+                while (true) {
                     // Auf Anfrage warten
-
 
                     DatagramPacket incomingPacket = new DatagramPacket(incomingData, incomingData.length);
                     socket.receive(incomingPacket);
@@ -83,10 +97,12 @@ public class AutobahnMonitor extends Thread{
                         bench.isFailed();
                         e.printStackTrace();
                     }
-                    if (counter == 1000){
+                    if (counter == 1000) {
                         System.out.println(bench.results());
                     }
 
+
+                    // Daten an NavigationDienst schicken
 
 
                 }
@@ -101,10 +117,11 @@ public class AutobahnMonitor extends Thread{
 
         }
 
-        public void run(){
+        public void run() {
             try {
+                init_xmprpc();
                 startServerUDP();
-                //   startServer();
+                //startServer();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -112,11 +129,6 @@ public class AutobahnMonitor extends Thread{
         }
 
     }
-
-
-
-
-
 
 
 }

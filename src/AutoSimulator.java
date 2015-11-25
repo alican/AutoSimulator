@@ -7,6 +7,13 @@ public class AutoSimulator {
 
     ArrayList<AutonomCar> autonomCarArrayList;
 
+    public enum PROTOCOLS {
+        UDP,
+        TCP
+    }
+
+    static public PROTOCOLS protocol;
+
     int cars;
     public AutoSimulator(int cars) throws IOException {
         this.cars = cars;

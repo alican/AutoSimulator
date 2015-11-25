@@ -3,24 +3,25 @@ package cars;
 
 import communication.UserInterface;
 import models.Bench;
+import org.apache.xmlrpc.XmlRpcException;
+import org.apache.xmlrpc.client.XmlRpcClient;
+import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
 
 import java.io.*;
 import java.net.*;
 
 public class AutonomCar extends CarBaseClass {
 
-    public static String address = "localhost";
-    public static int port = 9997;
+    public static String address;
+    public static int port;
 
     BufferedReader fromServer;
     ObjectOutputStream toServer;
     UserInterface user = new UserInterface();
     SocketAddress addr = new InetSocketAddress(address, port);
-
+    XmlRpcClient client;
 
     static Bench bench;
-
-
 
     public AutonomCar() {
         bench = Bench.getInstance();
@@ -30,6 +31,28 @@ public class AutonomCar extends CarBaseClass {
 
     public void printId(){
         System.out.println("My id is: " + getCarId());
+    }
+
+
+    public void update(){
+        xmlRpcRequest();
+    }
+
+    void xmlRpcRequest(){
+
+        Object[] params = new Object[]{new Integer(3334), new Integer(9)};
+
+        Integer result = null;
+        try {
+
+            result = (Integer) client.execute("Calculator.add", params);
+
+
+        } catch (XmlRpcException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Add Result = " + result );
+
     }
 
     public void startUDPClient() throws Exception{
@@ -128,19 +151,31 @@ public class AutonomCar extends CarBaseClass {
     }
 
     public void run(){
-
-
         try {
-            startTCPClient();
-
-
+            //startTCPClient();
+            init_xmprpc();
            // startUDPClient();
-
-
-
-           // startTCPClient();
         } catch (Exception e) {
            // e.printStackTrace();
+        }
+
+        for(int i = 0; i < 10; i++) {
+            update();
+
+        }
+
+        }
+
+    private void init_xmprpc() {
+
+        try {
+            XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl();
+            config.setServerURL(new URL("http://127.0.0.1:8080/xmlrpc"));
+            client = new XmlRpcClient();
+            client.setConfig(config);
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
         }
 
     }
