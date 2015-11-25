@@ -1,4 +1,4 @@
-package communication;
+package autosim.communication;
 
 /**
  * @author Peter Altenberd

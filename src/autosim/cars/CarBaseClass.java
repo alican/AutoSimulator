@@ -1,7 +1,7 @@
-package cars;
+package autosim.cars;
 
-import autobahn.Location;
-import utls.RandomString;
+import autosim.autobahn.Location;
+import autosim.utls.RandomString;
 
 /**
  * Created by alican on 23.10.2015.

@@ -1,4 +1,4 @@
-package communication;
+package autosim.communication;
 
 // 22. 10. 10
 
@@ -21,7 +21,7 @@ public class TCPServer {
     public static void main(String[] args) throws Exception {
         ServerSocket contactSocket = new ServerSocket(9999);
         while (true) {                            // Handle connection request
-            Socket client = contactSocket.accept(); // creat communication socket
+            Socket client = contactSocket.accept(); // creat autosim.communication socket
             System.out.println("Connection with: " + client.getRemoteSocketAddress());
             handleRequests(client);
         }

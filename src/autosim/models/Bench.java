@@ -1,4 +1,4 @@
-package models;
+package autosim.models;
 
 import java.util.ArrayList;
 import java.util.List;

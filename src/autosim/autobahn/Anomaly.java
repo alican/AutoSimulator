@@ -1,4 +1,4 @@
-package autobahn;
+package autosim.autobahn;
 
 public class Anomaly {
     enum TYPE{

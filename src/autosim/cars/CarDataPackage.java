@@ -1,6 +1,6 @@
-package cars;
+package autosim.cars;
 
-import autobahn.Location;
+import autosim.autobahn.Location;
 
 import java.io.Serializable;
 

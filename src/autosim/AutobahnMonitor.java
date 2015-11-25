@@ -1,7 +1,9 @@
-import cars.AutonomCar;
-import cars.CarDataPackage;
-import communication.EchoService;
-import models.Bench;
+package autosim;
+
+import autosim.cars.AutonomCar;
+import autosim.cars.CarDataPackage;
+import autosim.communication.EchoService;
+import autosim.models.Bench;
 import org.apache.xmlrpc.client.XmlRpcClient;
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
 
@@ -102,7 +104,7 @@ public class AutobahnMonitor extends Thread {
                     }
 
 
-                    // Daten an NavigationDienst schicken
+                    // Daten an autosim.NavigationDienst schicken
 
 
                 }

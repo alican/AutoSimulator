@@ -1,13 +1,13 @@
-import cars.AutonomCar;
-import models.Bench;
+package autosim;
+
+import autosim.cars.AutonomCar;
+import autosim.models.Bench;
 
 import java.io.IOException;
 import java.util.Scanner;
 
 
 public class Main {
-
-
 
     public static void main(String[] args){
 
@@ -44,7 +44,7 @@ public class Main {
             }
         }
 
-        System.out.print("Enter number of cars (default: 10)");
+        System.out.print("Enter number of autosim.cars (default: 10)");
 
         input = user_input.nextLine();
 

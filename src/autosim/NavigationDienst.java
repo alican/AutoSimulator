@@ -1,3 +1,5 @@
+package autosim;
+
 import org.apache.xmlrpc.XmlRpcException;
 import org.apache.xmlrpc.server.PropertyHandlerMapping;
 import org.apache.xmlrpc.server.XmlRpcServer;
@@ -25,7 +27,7 @@ public class NavigationDienst {
             XmlRpcServer xmlRpcServer = webServer.getXmlRpcServer();
             PropertyHandlerMapping phm = new PropertyHandlerMapping();
 
-           // phm.addHandler( "Calculator", NavigationDienst.class);
+           // phm.addHandler( "Calculator", autosim.NavigationDienst.class);
             phm.addHandler( "RoadState", NavigationDienst.class);
 
             xmlRpcServer.setHandlerMapping(phm);

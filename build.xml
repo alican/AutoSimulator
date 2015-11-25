@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Main" basedir="." default="main">
+<project name="autosim" basedir="." default="main">
 
 
     <property name="lib.dir"     value="lib"/>
@@ -9,7 +9,7 @@
     <property name="classes.dir" value="${build.dir}/classes"/>
     <property name="jar.dir"     value="${build.dir}/jar"/>
 
-    <property name="main-class"  value="Main"/>
+    <property name="main-class"  value="autosim.Main"/>
 
 
 
@@ -31,7 +31,7 @@
         <mkdir dir="${jar.dir}"/>
         <jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${classes.dir}">
             <manifest>
-                <attribute name="Main-Class" value="${main-class}"/>
+                <attribute name="autosim.Main-Class" value="${main-class}"/>
             </manifest>
         </jar>
     </target>

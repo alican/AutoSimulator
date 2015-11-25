@@ -1,4 +1,4 @@
-package communication;
+package autosim.communication;
 
 // 22.10. 10
 
@@ -9,7 +9,7 @@ package communication;
  * Darmstadt Univ. of Applied Sciences      Hochschule Darmstadt
  */
 
-import cars.CarDataPackage;
+import autosim.cars.CarDataPackage;
 
 import java.io.*;
 import java.net.*;

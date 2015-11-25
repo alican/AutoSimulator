@@ -1,4 +1,4 @@
-package autobahn;
+package autosim.autobahn;
 
 /**
  * Created by alican on 23.10.2015.

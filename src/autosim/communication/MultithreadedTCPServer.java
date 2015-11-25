@@ -1,4 +1,4 @@
-package communication;
+package autosim.communication;
 
 import java.net.*;
 

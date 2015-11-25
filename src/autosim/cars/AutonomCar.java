@@ -1,8 +1,8 @@
-package cars;
+package autosim.cars;
 
 
-import communication.UserInterface;
-import models.Bench;
+import autosim.communication.UserInterface;
+import autosim.models.Bench;
 import org.apache.xmlrpc.XmlRpcException;
 import org.apache.xmlrpc.client.XmlRpcClient;
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;

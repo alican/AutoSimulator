@@ -1,4 +1,6 @@
-import cars.AutonomCar;
+package autosim;
+
+import autosim.cars.AutonomCar;
 
 import java.io.IOException;
 import java.util.ArrayList;
