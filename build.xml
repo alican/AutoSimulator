@@ -100,7 +100,7 @@
   
   
   
-  <property name="compiler.args.autosimulator" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  <property name="compiler.args.autosimulator" value="-encoding UTF-8 -source 1.7 -target 1.7 ${compiler.args}"/>
   
   <property name="autosimulator.output.dir" value="${module.autosimulator.basedir}/out/production/AutoSimulator"/>
   <property name="autosimulator.testoutput.dir" value="${module.autosimulator.basedir}/out/test/AutoSimulator"/>
