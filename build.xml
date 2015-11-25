@@ -9,10 +9,6 @@
    -->
   
   <!-- Compiler options -->
-
-  <presetdef name="javac">
-    <javac includeantruntime="false" />
-  </presetdef>
   
   <property name="compiler.debug" value="on"/>
   <property name="compiler.generate.no.warnings" value="off"/>
